@@ -4,7 +4,7 @@ from scorelib.proj_poco.rev_tubos_lib import API_Burst, API_Collapse, API_Axial
 
 casing_properties = read_excel('./rep/roque1996.xlsx').copy()
 
-grade_fy_passer = {'K55': 55000, 'N80': 80000, 'C95': 95000, 'S95': 95000, 'C75': 75000, 'P110': 110000, 'H40': 40000,
+grade_fy_parser = {'K55': 55000, 'N80': 80000, 'C95': 95000, 'S95': 95000, 'C75': 75000, 'P110': 110000, 'H40': 40000,
                    'V150': 150000}
 
 casing_properties['Burst SCORE'] = None
@@ -18,9 +18,9 @@ for row in range(casing_properties.shape[0]):
     young = 3E8
     poisson = 0.3
 
-    casing_properties.loc[row, 'Burst SCORE'] = API_Burst(Yp=grade_fy_passer[grade], D=od, t=wt, kwall=kwall)
-    casing_properties.loc[row, 'Collapse SCORE'] = API_Collapse(Yp=grade_fy_passer[grade], D=od, t=wt, E=young, nu=poisson)
-    casing_properties.loc[row, 'Axial SCORE'] = API_Axial(Yp=grade_fy_passer[grade], D=od, t=wt)
+    casing_properties.loc[row, 'Burst SCORE'] = API_Burst(Yp=grade_fy_parser[grade], D=od, t=wt, kwall=kwall)
+    casing_properties.loc[row, 'Collapse SCORE'] = API_Collapse(Yp=grade_fy_parser[grade], D=od, t=wt, E=young, nu=poisson)
+    casing_properties.loc[row, 'Axial SCORE'] = API_Axial(Yp=grade_fy_parser[grade], D=od, t=wt)
 
 # casing_properties.to_clipboard()
 
@@ -58,6 +58,6 @@ for row_i in casing_properties.iterrows():
                                                     'Weight': tubular_properties_i['Weight'],
                                                     'Grade': tubular_properties_i['Grade'],
                                                     'wt': tubular_properties_i['wt'],
-                                                    'fy': grade_fy_passer[tubular_properties_i['Grade']],
+                                                    'fy': grade_fy_parser[tubular_properties_i['Grade']],
                                                     'old_ids': aux_i},
                                                    ignore_index=True)

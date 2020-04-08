@@ -3,11 +3,10 @@ import json
 # get json file from score web interface
 from matplotlib import pyplot
 from scorelib.converter import Converter
-from scorelib.models.string_section import StringSectionBuilder, StringSection
 
 from parsers.score_project_json import JSONTest, convert_json
-from scripts.score_solver import ScoreSolver
-from scripts.tubulars_catalog.roque_catalog_to_df import new_casing_catalog
+from score_solver import ScoreSolver
+from tubulars_catalog.roque_catalog_to_df import new_casing_catalog
 
 with open("./scripts/score_projects/project476.json", 'r', encoding="latin-1") as f:
     data = json.load(f)
@@ -30,8 +29,8 @@ for fs_result in cementing_fs:
 
 pyplot.plot(fs_original, depths, label='original tubular, $fs_{min}$=%.2f' %(min(fs_original)))
 
-# working on production string (id=3), we want to change the current tubular of the project to the first one in the dataframe
-new_cs = 11  # index on dataframe
+# working on production string (id=any), we want to change the current tubular of the project to the first one in the dataframe
+new_cs = 3  # index on dataframe
 data['well_strings'][cs_id]['string_sections'][0]['pipe']['weight'] = new_casing_catalog.loc[new_cs, 'Weight']
 data['well_strings'][cs_id]['string_sections'][0]['pipe']['wt'] = new_casing_catalog.loc[new_cs, 'wt']
 data['well_strings'][cs_id]['string_sections'][0]['pipe']['grade']['name'] = new_casing_catalog.loc[new_cs, 'Grade']
@@ -52,5 +51,6 @@ for fs_result in cementing_fs:
 
 pyplot.plot(fs_new, depths, label='our selection tubular, $fs_{min}$=%.2f' %(min(fs_new)))
 pyplot.legend()
+pyplot.gca().invert_yaxis()
 pyplot.show()
 
