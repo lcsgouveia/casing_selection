@@ -10,7 +10,7 @@ from scorelib.loads.scenarios.load_scenario import LoadScenario
 
 from parsers.score_project_json import JSONTest, convert_json
 
-with open("./scripts/score_projects/project476.json", 'r', encoding="latin-1") as f:
+with open("C:/casing_selection-master/scripts/score_projects/project476.json", 'r', encoding="latin-1") as f:
     data = json.load(f)
 
 instance = JSONTest()
@@ -45,6 +45,7 @@ casing_design = CasingDesign(string_sections=casing_string.string_sections,
                              design_standard=N2752Y2014SimpleConnectionTriaxialDesignStandard)
 
 print(casing_design.load_result.internal_profile)
+print(casing_design.api_collapse_strength)
 print(casing_design.load_result.external_profile)
 print(casing_design.load_result.axial_profile)
 
