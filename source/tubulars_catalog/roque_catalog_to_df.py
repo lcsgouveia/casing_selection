@@ -2,8 +2,7 @@ import pandas
 from pandas import read_excel
 from scorelib.proj_poco.rev_tubos_lib import API_Burst, API_Collapse, API_Axial
 
-casing_properties = read_excel('C:/Users/laris/Desktop/DOUGLAS/LCCV/casing_selection-master-Douglas/'
-                               'rep/roque1996.xlsx').copy()
+casing_properties = read_excel('rep/roque1996.xlsx').copy()
 
 grade_fy_passer = {'K55': 55000, 'N80': 80000, 'C95': 95000, 'S95': 95000, 'C75': 75000, 'P110': 110000, 'H40': 40000,
                    'V150': 150000}

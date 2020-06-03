@@ -11,8 +11,7 @@ from source.score_solver import ScoreSolver
 
 # from source.tubulars_catalog.roque_catalog_to_df import new_casing_catalog
 
-with open("C:/Users/laris/Desktop/DOUGLAS/LCCV/casing_selection-master-Douglas/source/score_projects/"
-          "project476.json", 'r', encoding="latin-1") as f:
+with open("source/score_projects/project476.json", 'r', encoding="latin-1") as f:
     data = json.load(f)
 
 cs_id = 3
@@ -21,6 +20,11 @@ instance = JSONTest()
 instance.input = convert_json(data)
 project = Converter.to_lccv_project(instance)
 ss = ScoreSolver(project=project)
+
+for section in ss.project.casing_strings[cs_id].string_sections:
+    section.material.young_modulus = 30E6
+    section.material.poisson_ratio = 0.28
+
 pressure_test_result = ss.solve_pressure_test(casing_string_id=cs_id)
 cementing_result = ss.solve_cementing_load(casing_string_id=cs_id)
 lost_returns_result = ss.solve_lost_returns(casing_string_id=cs_id)
@@ -68,6 +72,9 @@ def fscementing(parameters, data_):
     instance_.input = convert_json(data_)
     project = Converter.to_lccv_project(instance_)
     ss = ScoreSolver(project=project)
+    for section in ss.project.casing_strings[cs_id].string_sections:
+        section.material.young_modulus = 30E6
+        section.material.poisson_ratio = 0.28
     cementing_result = ss.solve_cementing_load(casing_string_id=cs_id)
     cementing_fs = cementing_result.get_api_collapse_safety_factor()
     cementing_fs = numpy.array(cementing_fs)
@@ -80,7 +87,7 @@ constraintfscementing = {'type': 'ineq', 'fun': fscementing, 'args': (data,)}
 bounds = [(0.27, 0.6), (40000, 160000)]
 bounds1 = [(0.2, None), (110000, 110000)]
 
-x0 = [0.2, 1]
+x0 = [1, 15e4]
 
-minsolve = minimize(objective, x0, constraints=(constraintfscementing,), bounds=bounds1)
+minsolve = minimize(objective, x0, constraints=(constraintfscementing,), bounds=bounds1, method='SLSQP')
 print(minsolve)

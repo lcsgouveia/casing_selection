@@ -42,4 +42,4 @@ for v in prob.variables():
     if v.varValue>0:
         print(v.name, "=", v.varValue)
 
-print("The total cost of this balanced diet is: ${}".format(round(value(prob.objective),2)))
+print("The total cost of this balanced diet is: ${}".format(round(value(prob.cost_linear_fitted), 2)))
