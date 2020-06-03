@@ -1,9 +1,9 @@
 import numpy
 
-from score_solver import ScoreSolver
+from source.score_solver import ScoreSolver
 
 
-def constraint_func_builder(parameters, project, casing_string_id, min_collapse_sf):
+def constraint_func_builder(parameters, project, casing_string_id):
     wt = parameters[0]
     fy = parameters[1]
     ss = ScoreSolver(project=project)
@@ -20,24 +20,22 @@ def constraint_func_builder(parameters, project, casing_string_id, min_collapse_
 def constraint_fs_cementing(parameters, project, casing_string_id, min_collapse_sf):
     ss = constraint_func_builder(parameters=parameters,
                                  project=project,
-                                 casing_string_id=casing_string_id,
-                                 min_collapse_sf=min_collapse_sf)
+                                 casing_string_id=casing_string_id)
 
-    cementing_result = ss.solve_cementing_load(casing_string_id=casing_string_id)
-    cementing_fs = cementing_result.get_api_collapse_safety_factor()
-    cementing_fs = numpy.array(cementing_fs)
+    result = ss.solve_cementing_load(casing_string_id=casing_string_id)
+    fs = result.get_api_collapse_safety_factor()
+    fs = numpy.array(fs)
 
-    return cementing_fs[:, 1].min() - min_collapse_sf
+    return fs[:, 1].min() - min_collapse_sf
 
 
-def constraint_fs_pressure_test(parameters, project, casing_string_id, min_collapse_sf):
+def constraint_fs_pressure_test(parameters, project, casing_string_id, min_burst_sf):
     ss = constraint_func_builder(parameters=parameters,
                                  project=project,
-                                 casing_string_id=casing_string_id,
-                                 min_collapse_sf=min_collapse_sf)
+                                 casing_string_id=casing_string_id)
 
-    pressure_test_result = ss.solve_pressure_test(casing_string_id=casing_string_id)
-    pressure_test_fs = pressure_test_result.get_api_collapse_safety_factor()
-    pressure_test_fs = numpy.array(pressure_test_fs)
+    result = ss.solve_pressure_test(casing_string_id=casing_string_id)
+    fs = result.get_api_burst_safety_factor()
+    fs = numpy.array(fs)
 
-    return pressure_test_fs[:, 1].min() - min_collapse_sf
+    return fs[:, 1].min() - min_burst_sf

@@ -15,6 +15,7 @@ from scorelib.loads.burst_loads.influx import InfluxAttributes, Influx, InfluxCa
 from scorelib.loads.burst_loads.well_full_of_gas import WellFullOfGasAttributes, WellFullOfGas, WellFullOfGasCalculator
 from scorelib.loads.collapse_loads.wcd_collapse import WCDCollapseAttributes, WCDCollapse, WCDCollapseCalculator
 
+
 class ScoreSolver:
 
     def __init__(self, project):
