@@ -70,13 +70,9 @@ for fs_result in pressure_test_fs:
 #pyplot.plot(fs_original, depths, label='original tubular_teste_de_pressão, $fs_{min}$=%.2f' %(min(fs_original)))
 # working on production string (id=3), we want to change the current tubular of the project to the first one in the dataframe
 burst = 1.1
-collapse = 4.5
+collapse = 1.0
 triaxial = 1.25
 axial = 1.3
-#burst = 1.2
-#collapse = 1.125
-#triaxial = 1.6
-#axial = 1.6
 numero_secoes = len(data['well_strings'][cs_id]['string_sections'])
 
 for secao in range(numero_secoes):
@@ -149,22 +145,18 @@ for secao in range(numero_secoes):
                         TQ = selecao_carregamento[k].load_result.axial_profile[j][3]
                         if (pe > pi) and (selecao_carregamento[k].tipo_carga == 'Serviço'): #collapso
                             fator_seguranca = selecao_carregamento[k].get_api_collapse_safety_factor()
-                            #fator_seguranca = selecao_carregamento[k].get_iso_klever_tamano_safety_factor()
                             if fator_seguranca[j][1] < collapse:
                                 passou = False
                         if (pe > pi) and (selecao_carregamento[k].tipo_carga == 'Sobrevivência'):  # collapso
                             fator_seguranca = selecao_carregamento[k].get_iso_klever_tamano_safety_factor()
-                            #fator_seguranca = selecao_carregamento[k].get_api_collapse_safety_factor()
                             if fator_seguranca[j][1] < collapse:
                                 passou = False
                         if (pi > pe) and (selecao_carregamento[k].tipo_carga == 'Serviço'): #collapso: #ruptura
                             fator_seguranca = selecao_carregamento[k].get_api_burst_safety_factor()
-                            #fator_seguranca = selecao_carregamento[k].get_iso_klever_stewart_combined_safety_factor()
                             if fator_seguranca[j][1] < burst:
                                 passou = False
                         if (pi > pe) and (selecao_carregamento[k].tipo_carga == 'Sobrevivência'):  # collapso: #ruptura
                             fator_seguranca = selecao_carregamento[k].get_iso_klever_stewart_combined_safety_factor()
-                            #fator_seguranca = selecao_carregamento[k].get_api_burst_safety_factor()
                             if fator_seguranca[j][1] < burst:
                                 passou = False
                         if passou is False:
@@ -173,21 +165,15 @@ for secao in range(numero_secoes):
                         if (fator_seguranca_mises[j][1] < triaxial) and (selecao_carregamento[k].tipo_carga == 'Serviço'):
                             passou = False
                             break
-                        #resistencia_mises_uls = vonMisesCritical(Pint=pi, Pout=pe, Fa=Fa, D=od, t=wt,
-                        #                                         tmin=(wt-(1. - kwall_mises) * wt), E=30e6, DL=dl, TQ=TQ)
-                        #fator_seguranca_mises_uls = fu/resistencia_mises_uls[0] #Criterio de von mises para uls
-                        #if (fator_seguranca_mises_uls < triaxial) and (selecao_carregamento[k].tipo_carga == 'Sobrevivência'):
-                        #    passou = False
-                        #    break
-                       # fator_axial =selecao_carregamento[k].get_api_axial_safety_factor()
-                       # if fator_axial[j][1] < axial and (selecao_carregamento[k].tipo_carga == 'Serviço'): #Critério axial
-                       #     passou = False
-                       #     break
-                       # resistencia_axial_uls = API_Axial(fu, od, wt) #Critério axial considerando limite último
-                       # fator_axial_uls = resistencia_axial_uls/abs(Fa)
-                       # if fator_axial_uls < axial and (selecao_carregamento[k].tipo_carga == 'Sobrevivência'): #Critério axial
-                       #     passou = False
-                       #     break
+                        fator_axial =selecao_carregamento[k].get_api_axial_safety_factor()
+                        if fator_axial[j][1] < axial and (selecao_carregamento[k].tipo_carga == 'Serviço'): #Critério axial
+                            passou = False
+                            break
+                        resistencia_axial_uls = API_Axial(fu, od, wt) #Critério axial considerando limite último
+                        fator_axial_uls = resistencia_axial_uls/abs(Fa)
+                        if fator_axial_uls < axial and (selecao_carregamento[k].tipo_carga == 'Sobrevivência'): #Critério axial
+                            passou = False
+                            break
                         fator_s.append(fator_seguranca[j][1])
                      #   fator_s_triaxial.append(fator_seguranca_mises[j][1])
                         depths1.append(selecao_carregamento[k].load_result.internal_profile[j][0])

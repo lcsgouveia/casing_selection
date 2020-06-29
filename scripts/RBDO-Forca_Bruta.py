@@ -292,20 +292,17 @@ for secao in range(numero_secoes):
                         if (Pe < Pi) and (selecao_carregamento[k].tipo_carga == 'Sobrevivência'):
                             result2 = FORM(RV=X3, G=k_S_1) #uls_Klever_stewart
                         if (Pe < Pi) and (selecao_carregamento[k].tipo_carga == 'Serviço'):
-                           # result2 = FORM(RV=X5, G=API_burst) #API_burst
-                            result2 = FORM(RV=X3, G=k_S_1)  # uls_Klever_stewart
+                            result2 = FORM(RV=X5, G=API_burst) #API_burst
                         if (Pe > Pi) and (selecao_carregamento[k].tipo_carga == 'Sobrevivência'):
                             result2 = FORM(RV=X1, G=Klever_Tamano1) #uls Klever_tamano
                         if (Pe > Pi) and (selecao_carregamento[k].tipo_carga == 'Serviço'):
-                           # result2 = FORM(RV=X4, G=API_collapse) #API_collapse
-                            result2 = FORM(RV=X1, G=Klever_Tamano1)  # uls Klever_tamano
+                            result2 = FORM(RV=X4, G=API_collapse) #API_collapse
                         if (selecao_carregamento[k].tipo_carga == 'Sobrevivência'):
                             result3 = FORM(RV=X7, G=uls_axial) #uls_axial
                         if (selecao_carregamento[k].tipo_carga == 'Serviço'):
                             result3 = FORM(RV=X6, G=API_axial)  # API_axial
-                        if (selecao_carregamento[k].tipo_carga == 'Serviço'):
-                            result1 = FORM(RV=X2, G=von_mises_1) #von mises els
-                        if Pe > Pi and result2.beta < 5: #Colapso
+                        result1 = FORM(RV=X2, G=von_mises_1) #von mises els
+                        if Pe > Pi and result2.beta < 3.09: #Colapso
                             passou = False
                             break
                         if Pe < Pi and result2.beta < 4.26: #Ruptura

@@ -245,7 +245,7 @@ class Carregamentos:
         cementing_result = ScoreSolver(project=self.project).solve_cementing_load(casing_string_id=cs_id)
         lost_returns_result = ScoreSolver(project=self.project).solve_lost_returns(casing_string_id=cs_id)
 
-        return cementing_result,  cementing_result
+        return cementing_result,  influx_result, lost_returns_result, pressure_test_result
 
     def revestimento_intermediario2(self, casing_string_id):
         cs_id = casing_string_id
@@ -257,7 +257,8 @@ class Carregamentos:
         tubing_leak_result = ScoreSolver(project=self.project).solve_tubing_leak(casing_string_id=cs_id)
         lost_returns_result = ScoreSolver(project=self.project).solve_lost_returns(casing_string_id=cs_id)
         full_evacuation_result = ScoreSolver(project=self.project).solve_full_evacuation(casing_string_id=cs_id)
-        return cementing_result,  cementing_result
+        return cementing_result,   pressure_test_result, influx_result, partial_evacuation_result, injection_result, \
+               tubing_leak_result, lost_returns_result
 
 
     def revestimento_produção(self, casing_string_id):
