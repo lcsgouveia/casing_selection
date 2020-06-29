@@ -1,0 +1,25 @@
+# coding: utf-8
+from scorelib.conf.form import *
+from scorelib.estat.va import *
+from scorelib.estat.param import *
+from scorelib.design.standards.n_2752_y_2014_design_standard import *
+
+l = 20.
+
+# Função de falha - flexão
+def viga_flexao(u):
+    return u[1] - (1/8.) * u[0] * l ** 2
+
+def exemplo1_sagrilo(u):
+    return u[0]-u[1]
+# Variáveis aleatórias
+w = RV("normal", 6.0, 1.5, 1, 1)
+mo = RV("normal", 470.0, 47.0, 1, 1)
+X = [w, mo]
+R = RV("lognorm", 10, 2)
+S = RV("normal", 5, 2)
+X1 = [R, S]
+result1 = FORM(X1, exemplo1_sagrilo)
+result = FORM(X, viga_flexao)
+
+
